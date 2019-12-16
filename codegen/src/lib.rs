@@ -115,7 +115,7 @@ impl IncludeDir {
         Ok(())
     }
 
-    pub fn build(self, out_name: &str) -> io::Result<()> {
+    pub fn build(self, out_name: &str, filter: Vec<String>) -> io::Result<()> {
         let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(out_name);
         let mut out_file = BufWriter::new(File::create(&out_path)?);
 
@@ -128,6 +128,10 @@ impl IncludeDir {
         let mut map = phf_codegen::Map::new();
 
         for (name, (compression, path)) in &self.files {
+            let path_str = path.to_string_lossy();
+            if filter.iter().any(|value| path_str.ends_with(value)) {
+                continue;
+            }
             let include_path = format!("{}", self.manifest_dir.join(path).display());
 
             map.entry(
