@@ -27,7 +27,7 @@ phf = "0.7.21"
 tauri_includedir = "0.5.0"
 
 [build-dependencies]
-tauri_tauri_includedir_codegen = "0.5.0"
+tauri_includedir_codegen = "0.5.0"
 ```
 
 **build.rs**
