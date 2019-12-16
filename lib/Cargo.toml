@@ -1,5 +1,5 @@
 [package]
-name = "includedir"
+name = "tauri_includedir"
 description = "Include a whole directory tree at compile time! - Runtime part"
 keywords = ["include", "tree", "directory", "build", "static"]
 categories = ["filesystem"]
@@ -19,7 +19,3 @@ default = ["flate2"]
 phf = "0.8.0"
 
 flate2 = { version = "1.0.13", optional = true }
-
-[badges]
-travis-ci = { repository = "tilpner/includedir", branch = "master" }
-appveyor = { repository = "tilpner/includedir", branch = "master", service = "github" }

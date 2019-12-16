@@ -9,7 +9,7 @@ edition = "2018"
 
 [dependencies]
 phf = "0.8.0"
-includedir = { path = "../lib" }
+tauri_includedir = { path = "../lib" }
 
 [build-dependencies]
-includedir_codegen = { path = "../codegen" }
+tauri_includedir_codegen = { path = "../codegen" }

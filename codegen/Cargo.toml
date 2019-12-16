@@ -1,5 +1,5 @@
 [package]
-name = "includedir_codegen"
+name = "tauri_includedir_codegen"
 description = "Include a whole directory tree at compile time! - Compile time part"
 keywords = ["include", "tree", "directory", "build", "static"]
 categories = ["filesystem"]
@@ -16,7 +16,3 @@ edition = "2018"
 walkdir = "2.2.9"
 phf_codegen = "0.8.0"
 flate2 = "1.0.13"
-
-[badges]
-travis-ci = { repository = "tilpner/includedir", branch = "master" }
-appveyor = { repository = "tilpner/includedir", branch = "master", service = "github" }
