@@ -23,7 +23,7 @@ build = "build.rs"
 include = ["data"]
 
 [dependencies]
-phf = "0.7.21"
+phf = "0.8.0"
 tauri_includedir = "0.5.0"
 
 [build-dependencies]
