@@ -1,7 +1,3 @@
-extern crate flate2;
-extern crate phf_codegen;
-extern crate walkdir;
-
 use std::borrow::{Borrow, Cow};
 use std::collections::HashMap;
 use std::fs::{self, File};

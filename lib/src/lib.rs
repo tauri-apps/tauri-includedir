@@ -1,8 +1,3 @@
-extern crate phf;
-
-#[cfg(feature = "flate2")]
-extern crate flate2;
-
 use std::borrow::{Borrow, Cow};
 use std::io::{self, Cursor, Error, ErrorKind, Read};
 
