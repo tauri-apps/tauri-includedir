@@ -5,9 +5,10 @@ authors = ["Till Höppner <till@hoeppner.ws>"]
 build = "build.rs"
 include = ["data", "data/*", "data/**"]
 publish = false
+edition = "2018"
 
 [dependencies]
-phf = "0.7.21"
+phf = "0.8.0"
 includedir = { path = "../lib" }
 
 [build-dependencies]

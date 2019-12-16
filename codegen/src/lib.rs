@@ -137,8 +137,7 @@ impl IncludeDir {
             map.entry(
                 name.as_str(),
                 &format!(
-                    "(::includedir::Compression::{}, \
-                     include_bytes!(\"{}\") as &'static [u8])",
+                    "(::includedir::Compression::{}, include_bytes!(\"{}\"))",
                     compression,
                     as_key(&include_path)
                 ),
@@ -146,6 +145,7 @@ impl IncludeDir {
         }
 
         writeln!(&mut out_file, "{});", map.build())?;
+
         Ok(())
     }
 }
