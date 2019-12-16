@@ -4,9 +4,7 @@ extern crate phf;
 extern crate flate2;
 
 use std::borrow::{Borrow, Cow};
-use std::io::{self, BufReader, Cursor, Error, ErrorKind, Read};
-use std::fs::File;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::io::{self, Cursor, Error, ErrorKind, Read};
 
 #[cfg(feature = "flate2")]
 use flate2::bufread::GzDecoder;
@@ -15,16 +13,13 @@ use flate2::bufread::GzDecoder;
 pub enum Compression {
     None,
     #[cfg(feature = "flate2")]
-    Gzip
+    Gzip,
 }
 
 /// Runtime access to the included files
 pub struct Files {
-    // Do not access these fields, they are only public to allow for code generation!
     #[doc(hidden)]
-    pub files: phf::Map<&'static str, (Compression, &'static [u8])>,
-    #[doc(hidden)]
-    pub passthrough: AtomicBool
+    files: phf::Map<&'static str, (Compression, &'static [u8])>,
 }
 
 #[cfg(windows)]
@@ -38,8 +33,8 @@ fn as_key(path: &str) -> Cow<str> {
 }
 
 impl Files {
-    pub fn set_passthrough(&self, enabled: bool) {
-        self.passthrough.store(enabled, Ordering::Relaxed);
+    pub const fn new(files: phf::Map<&'static str, (Compression, &'static [u8])>) -> Self {
+        Self { files }
     }
 
     pub fn is_available(&self, path: &str) -> bool {
@@ -49,7 +44,9 @@ impl Files {
     /// Returns an iterator over all available file names.  Does not
     /// decompress any compressed data.
     pub fn file_names(&'static self) -> FileNames {
-        FileNames { iter: self.files.keys() }
+        FileNames {
+            iter: self.files.keys(),
+        }
     }
 
     pub fn get(&self, path: &str) -> io::Result<Cow<'static, [u8]>> {
@@ -61,40 +58,28 @@ impl Files {
                 let mut v = Vec::new();
                 r.read_to_end(&mut v)?;
                 Ok(Cow::Owned(v))
-            },
-            Err(e) => Err(e)
+            }
+            Err(e) => Err(e),
         }
     }
 
     pub fn get_raw(&self, path: &str) -> io::Result<(Compression, Cow<'static, [u8]>)> {
-        if self.passthrough.load(Ordering::Relaxed) {
-            let mut r = BufReader::new(File::open(path)?);
-            let mut v = Vec::new();
-            r.read_to_end(&mut v)?;
-            return Ok((Compression::None, Cow::Owned(v)))
-        }
-
         let key = as_key(path);
 
-        self.files.get(&*key)
-            .map(|&(c,d)| (c, Cow::Owned(d.to_owned())))
+        self.files
+            .get(&*key)
+            .map(|&(c, d)| (c, Cow::Owned(d.to_owned())))
             .ok_or_else(|| Error::new(ErrorKind::NotFound, "Key not found"))
     }
 
-    pub fn read(&self, path: &str) -> io::Result<Box<Read>> {
-        if self.passthrough.load(Ordering::Relaxed) {
-            return Ok(Box::new(BufReader::new(File::open(path)?)))
-        }
-
+    pub fn read(&self, path: &str) -> io::Result<Box<dyn Read>> {
         let key = as_key(path);
         match self.files.get(key.borrow() as &str) {
-            Some(b) => {
-                match b.0 {
-                    Compression::None => Ok(Box::new(Cursor::new(b.1))),
-                    #[cfg(feature = "flate2")]
-                    Compression::Gzip => Ok(Box::new(GzDecoder::new(Cursor::new(b.1)))),
-                }
-            }
+            Some(b) => match b.0 {
+                Compression::None => Ok(Box::new(Cursor::new(b.1))),
+                #[cfg(feature = "flate2")]
+                Compression::Gzip => Ok(Box::new(GzDecoder::new(Cursor::new(b.1)))),
+            },
             None => Err(Error::new(ErrorKind::NotFound, "Key not found")),
         }
     }
