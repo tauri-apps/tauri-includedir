@@ -10,7 +10,6 @@ homepage = "https://github.com/tilpner/includedir"
 repository = "https://github.com/tilpner/includedir"
 documentation = "https://docs.rs/includedir"
 readme = "../README.md"
-edition = "2018"
 
 [features]
 default = ["flate2"]
