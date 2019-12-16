@@ -1,11 +1,5 @@
-includedir
+tauri_includedir
 ===========
-
-[![Travis](https://img.shields.io/travis/tilpner/includedir.svg?style=flat-square)](https://travis-ci.org/tilpner/includedir)
-[![Appveyor](https://img.shields.io/appveyor/ci/tilpner/includedir.svg?label=appveyor&style=flat-square)](https://ci.appveyor.com/project/tilpner/includedir)
-[![Crates.io version](https://img.shields.io/crates/v/includedir.svg?style=flat-square)](https://crates.io/crates/includedir)
-[![docs.rs](https://docs.rs/includedir/badge.svg)](https://docs.rs/includedir)
-[![Crates.io license](https://img.shields.io/crates/l/includedir.svg?style=flat-square)](https://crates.io/crates/includedir)
 
 Include a directory in your Rust binary, e.g. static files for your web server or assets for your game.
 
@@ -30,21 +24,21 @@ include = ["data"]
 
 [dependencies]
 phf = "0.7.21"
-includedir = "0.5.0"
+tauri_includedir = "0.5.0"
 
 [build-dependencies]
-includedir_codegen = "0.5.0"
+tauri_tauri_includedir_codegen = "0.5.0"
 ```
 
 **build.rs**
 
 ```rust
-extern crate includedir_codegen;
+extern crate tauri_includedir_codegen;
 
-use includedir_codegen::Compression;
+use tauri_includedir_codegen::Compression;
 
 fn main() {
-    includedir_codegen::start("FILES")
+    tauri_includedir_codegen::start("FILES")
         .dir("data", Compression::Gzip)
         .build("data.rs")
         .unwrap();
@@ -54,7 +48,7 @@ fn main() {
 **src/main.rs**
 
 ```rust
-extern crate includedir;
+extern crate tauri_includedir;
 extern crate phf;
 
 use std::env;
