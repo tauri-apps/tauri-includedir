@@ -121,7 +121,7 @@ impl IncludeDir {
 
         write!(
             &mut out_file,
-            "pub static {}: ::includedir::Files = ::includedir::Files::new(",
+            "pub static {}: ::tauri_includedir::Files = ::tauri_includedir::Files::new(",
             self.name
         )?;
 
@@ -137,7 +137,7 @@ impl IncludeDir {
             map.entry(
                 name.as_str(),
                 &format!(
-                    "(::includedir::Compression::{}, include_bytes!(\"{}\"))",
+                    "(::tauri_includedir::Compression::{}, include_bytes!(\"{}\"))",
                     compression,
                     as_key(&include_path)
                 ),
