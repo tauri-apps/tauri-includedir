@@ -121,7 +121,7 @@ impl IncludeDir {
 
         write!(
             &mut out_file,
-            "pub static {}: ::tauri_includedir::Files = ::tauri_includedir::Files::new(",
+            "#[allow(clippy::all)] pub static {}: ::tauri_includedir::Files = ::tauri_includedir::Files::new(",
             self.name
         )?;
 
