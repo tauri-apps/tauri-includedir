@@ -116,6 +116,9 @@ impl IncludeDir {
         Ok(())
     }
 
+    /// ## Build Function
+    ///
+    /// This function is the main builder function. The function contains a filter which lets you ignore specified files.
     pub fn build(self, out_name: &str, filter: Vec<String>) -> io::Result<()> {
         let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(out_name);
         let mut out_file = BufWriter::new(File::create(&out_path)?);
@@ -128,11 +131,16 @@ impl IncludeDir {
 
         let mut map = phf_codegen::Map::new();
 
+        // iterate through all of the files in the hashmap
         for (name, (compression, path)) in &self.files {
+            // create a path string
             let path_str = path.to_string_lossy();
-            if filter.iter().any(|value| path_str.ends_with(value)) {
+
+            // check to see if the files are in the filter.  If a file is in the filter ignore it.
+            if filter.iter().any(|value| !path_str.ends_with(value)) {
                 let include_path = format!("{}", self.manifest_dir.join(path).display());
 
+                // pass the files into the map.
                 map.entry(
                     name.as_str(),
                     &format!(
@@ -144,6 +152,7 @@ impl IncludeDir {
             }
         }
 
+        // write the map into the outfile.
         writeln!(&mut out_file, "{});", map.build())?;
 
         Ok(())
