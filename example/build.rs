@@ -6,9 +6,9 @@ fn main() {
         .build(
             "data.rs",
             vec![
-                "data/inner/boom".into(),
-                "data/empty".to_string(),
-                "data/foo".to_string(),
+                "inner\\boom".to_string(),
+                "empty".to_string(),
+                "foo".to_string(),
             ],
         )
         .unwrap();

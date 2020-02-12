@@ -66,6 +66,7 @@ impl IncludeDir {
     /// This function panics when CARGO_MANIFEST_DIR or OUT_DIR are not defined.
     pub fn add_file<P: AsRef<Path>>(&mut self, path: P, comp: Compression) -> io::Result<()> {
         let key = path.as_ref().to_string_lossy();
+        println!("cargo:rerun-if-changed={}", path.as_ref().display());
 
         match comp {
             Compression::None => {
@@ -130,18 +131,17 @@ impl IncludeDir {
         for (name, (compression, path)) in &self.files {
             let path_str = path.to_string_lossy();
             if filter.iter().any(|value| path_str.ends_with(value)) {
-                continue;
-            }
-            let include_path = format!("{}", self.manifest_dir.join(path).display());
+                let include_path = format!("{}", self.manifest_dir.join(path).display());
 
-            map.entry(
-                name.as_str(),
-                &format!(
-                    "(::tauri_includedir::Compression::{}, include_bytes!(\"{}\"))",
-                    compression,
-                    as_key(&include_path)
-                ),
-            );
+                map.entry(
+                    name.as_str(),
+                    &format!(
+                        "(::tauri_includedir::Compression::{}, include_bytes!(\"{}\"))",
+                        compression,
+                        as_key(&include_path)
+                    ),
+                );
+            }
         }
 
         writeln!(&mut out_file, "{});", map.build())?;
