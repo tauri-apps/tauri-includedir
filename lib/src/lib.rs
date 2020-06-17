@@ -14,7 +14,7 @@ pub enum Compression {
 /// Runtime access to the included files
 pub struct Files {
     #[doc(hidden)]
-    files: phf::Map<&'static str, (Compression, &'static [u8])>,
+    pub files: phf::Map<&'static str, (Compression, &'static [u8])>,
 }
 
 #[cfg(windows)]
@@ -28,16 +28,6 @@ fn as_key(path: &str) -> Cow<str> {
 }
 
 impl Files {
-    pub const fn new(files: phf::Map<&'static str, (Compression, &'static [u8])>) -> Self {
-        Self { files }
-    }
-
-    pub fn is_available(&self, path: &str) -> bool {
-        self.files.contains_key(path)
-    }
-
-    /// Returns an iterator over all available file names.  Does not
-    /// decompress any compressed data.
     pub fn file_names(&'static self) -> FileNames {
         FileNames {
             iter: self.files.keys(),
