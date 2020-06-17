@@ -34,6 +34,10 @@ impl Files {
         }
     }
 
+    pub fn is_available(&self, path: &str) -> bool {
+        self.files.contains_key(path)
+    }
+
     pub fn get(&self, path: &str) -> io::Result<Cow<'static, [u8]>> {
         match self.get_raw(path) {
             Ok((Compression::None, data)) => Ok(data),
