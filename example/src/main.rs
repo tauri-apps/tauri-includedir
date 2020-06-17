@@ -17,7 +17,7 @@ fn test() {
             .get("data/foo")
             .expect("data/foo not present")
             .into_owned(),
-        &[31, 139, 8, 0, 0, 0, 0, 0, 2, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        &[70, 111, 111]
     );
 
     let mut files = FILES.file_names().collect::<Vec<_>>();
@@ -26,14 +26,8 @@ fn test() {
 
     assert_eq!(
         FILES.get("data/inner/boom").unwrap().into_owned(),
-        &[31, 139, 8, 0, 0, 0, 0, 0, 2, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        &[66, 111, 111, 109, 33]
     );
-    assert_eq!(
-        FILES.get("data/foo").unwrap().into_owned(),
-        &[31, 139, 8, 0, 0, 0, 0, 0, 2, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    );
-    assert_eq!(
-        FILES.get("data/empty").unwrap().into_owned(),
-        &[31, 139, 8, 0, 0, 0, 0, 0, 2, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    );
+    assert_eq!(FILES.get("data/foo").unwrap().into_owned(), &[70, 111, 111]);
+    assert_eq!(FILES.get("data/empty").unwrap().into_owned(), &[]);
 }
