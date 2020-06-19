@@ -1,0 +1,30 @@
+name: covector version or publish
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  covector:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: 'https://registry.npmjs.org'
+      - name: covector version-or-publish
+        uses: ./packages/action
+        id: covector
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        with:
+          command: 'version-or-publish'
+      - name: create pull request
+        id: cpr
+        uses: tauri-apps/create-pull-request@v2
+        with:
+          title: "Publish New Versions"
+          labels: "version updates"
+          branch: "release"
