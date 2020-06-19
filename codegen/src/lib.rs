@@ -116,47 +116,45 @@ impl IncludeDir {
         Ok(())
     }
 
+    /// ## Build Function
+    ///
+    /// This function is the main builder function. The function contains a filter which lets you ignore specified files.
     pub fn build(self, out_name: &str, filter: Vec<String>) -> io::Result<()> {
         let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(out_name);
         let mut out_file = BufWriter::new(File::create(&out_path)?);
 
-        writeln!(&mut out_file, "#[allow(clippy::unreadable_literal)]")?;
-
-        writeln!(
+        write!(
             &mut out_file,
-            "pub static {}: ::tauri_includedir::Files = ::tauri_includedir::Files {{\n\
-                    files:  ",
+            "#[allow(clippy::all)] pub static {}: ::tauri_includedir::Files = ::tauri_includedir::Files::new(",
             self.name
         )?;
 
-        let mut map: phf_codegen::Map<&str> = phf_codegen::Map::new();
-        let entries: Vec<_> = self
-            .files
-            .iter()
-            .map(|(name, (compression, path))| {
-                let include_path = format!("{}", self.manifest_dir.join(path).display());
-                (
-                    as_key(&name).to_string(),
-                    (compression, as_key(&include_path).to_string()),
-                )
-            })
-            .collect();
+        let mut map = phf_codegen::Map::new();
 
-        for (name, (compression, include_path)) in &entries {
-            if filter.iter().any(|value| !include_path.ends_with(value)) {
-                let include_path = format!("{}", self.manifest_dir.join(include_path).display());
+        // iterate through all of the files in the hashmap
+        for (name, (compression, path)) in &self.files {
+            // create a path string
+            let path_str = path.to_string_lossy();
+
+            // check to see if the files are in the filter.  If a file is in the filter ignore it.
+            if filter.iter().any(|value| !path_str.ends_with(value)) {
+                let include_path = format!("{}", self.manifest_dir.join(path).display());
+
+                // pass the files into the map.
                 map.entry(
-                    name,
+                    name.as_str(),
                     &format!(
-                        "(::tauri_includedir::Compression::{}, \
-                                    include_bytes!(\"{}\") as &'static [u8])",
-                        compression, include_path
+                        "(::tauri_includedir::Compression::{}, include_bytes!(\"{}\"))",
+                        compression,
+                        as_key(&include_path)
                     ),
                 );
             }
         }
 
-        writeln!(&mut out_file, "{}}};", map.build())?;
+        // write the map into the outfile.
+        writeln!(&mut out_file, "{});", map.build())?;
+
         Ok(())
     }
 }
