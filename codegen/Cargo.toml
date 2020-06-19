@@ -3,7 +3,7 @@ name = "tauri_includedir_codegen"
 description = "Include a whole directory tree at compile time! - Compile time part"
 keywords = ["include", "tree", "directory", "build", "static"]
 categories = ["filesystem"]
-version = "0.5.2"
+version = "0.6.0"
 authors = ["Till Höppner <till@hoeppner.ws>"]
 license = "BSD-3-Clause"
 homepage = "https://github.com/tilpner/includedir"
@@ -13,6 +13,6 @@ readme = "../README.md"
 edition = "2018"
 
 [dependencies]
-walkdir = "2.2.9"
+walkdir = "2.2"
 phf_codegen = "0.8.0"
-flate2 = "1.0.13"
+flate2 = "1.0"

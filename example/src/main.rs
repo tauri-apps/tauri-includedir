@@ -17,20 +17,17 @@ fn test() {
             .get("data/foo")
             .expect("data/foo not present")
             .into_owned(),
-        &[102, 111, 111, 13, 10]
+        &[70, 111, 111]
     );
 
     let mut files = FILES.file_names().collect::<Vec<_>>();
     files.sort();
-    assert_eq!(files, vec!["data/empty", "data/foo", "data/inner/boom"]);
+    assert_eq!(files, vec!["data/empty", "data/foo", "data/inner/boom",]);
 
     assert_eq!(
         FILES.get("data/inner/boom").unwrap().into_owned(),
-        &[98, 111, 111, 109, 13, 10]
+        &[66, 111, 111, 109, 33]
     );
-    assert_eq!(
-        FILES.get("data/foo").unwrap().into_owned(),
-        &[102, 111, 111, 13, 10]
-    );
+    assert_eq!(FILES.get("data/foo").unwrap().into_owned(), &[70, 111, 111]);
     assert_eq!(FILES.get("data/empty").unwrap().into_owned(), &[]);
 }
