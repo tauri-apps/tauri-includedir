@@ -15,8 +15,6 @@ jobs:
       - name: covector version-or-publish
         uses: jbolda/covector/packages/action@master
         id: covector
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         with:
           command: 'version-or-publish'
       - name: create pull request
