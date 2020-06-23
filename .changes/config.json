@@ -1,0 +1,29 @@
+{
+  "pkgManagers": {
+    "rust": {
+      "version": true,
+      "getPublishedVersion": "cargo search ${ pkg.pkg } --limit 1 | sed -nE 's/^[^\"]*\"//; s/\".*//1p'",
+      "prepublishRoot": [
+        "cargo generate-lockfile",
+        "cargo install cargo-audit",
+        "echo \"# Cargo Audit\" | tee -a ./notes.md",
+        "echo \"\\`\\`\\`\" >> ./notes.md",
+        "cargo audit 2>&1 | tee -a ./notes.md",
+        "echo \"\\`\\`\\`\" >> ./notes.md"
+      ],
+      "prepublish": [
+        "cargo package --no-verify",
+        "echo \"# Cargo Publish\" | tee -a ./notes.md",
+        "echo \"\\`\\`\\`\" >> ${{runner.workspace }}/notes.md"
+      ],
+      "publish": "set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ./notes.md",
+      "postpublish": "echo \"\\`\\`\\`\" >> ./notes.md"
+    }
+  },
+  "packages": {
+    "tauri.js": {
+      "path": "./lib",
+      "manager": "rust"
+    }
+  }
+}
