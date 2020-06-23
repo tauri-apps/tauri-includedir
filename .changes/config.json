@@ -21,7 +21,7 @@
     }
   },
   "packages": {
-    "tauri.js": {
+    "tauri_includedir": {
       "path": "./lib",
       "manager": "rust"
     }
