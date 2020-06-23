@@ -13,11 +13,11 @@
       ],
       "prepublish": [
         "cargo package --no-verify",
-        "echo \"# Cargo Publish\" | tee -a ${{runner.workspace }}/notes.md",
+        "echo \"# Cargo Publish\" | tee -a ./notes.md",
         "echo \"\\`\\`\\`\" >> ${{runner.workspace }}/notes.md"
       ],
-      "publish": "set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ${{runner.workspace }}/notes.md",
-      "postpublish": "echo \"\\`\\`\\`\" >> ${{runner.workspace }}/notes.md"
+      "publish": "set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ./notes.md",
+      "postpublish": "echo \"\\`\\`\\`\" >> ./notes.md"
     }
   },
   "packages": {
