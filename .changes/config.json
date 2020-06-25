@@ -6,18 +6,18 @@
       "prepublishRoot": [
         "cargo generate-lockfile",
         "cargo install cargo-audit",
-        "echo \"# Cargo Audit\" | tee -a ./notes.md",
-        "echo \"\\`\\`\\`\" >> ./notes.md",
-        "cargo audit 2>&1 | tee -a ./notes.md",
-        "echo \"\\`\\`\\`\" >> ./notes.md"
+        "echo \"# Cargo Audit\" | tee -a ../notes.md",
+        "echo \"\\`\\`\\`\" >> ../notes.md",
+        "cargo audit 2>&1 | tee -a ../notes.md",
+        "echo \"\\`\\`\\`\" >> ../notes.md"
       ],
       "prepublish": [
         "cargo package --no-verify",
-        "echo \"# Cargo Publish\" | tee -a ./notes.md",
-        "echo \"\\`\\`\\`\" >> ./notes.md"
+        "echo \"# Cargo Publish\" | tee -a ../notes.md",
+        "echo \"\\`\\`\\`\" >> ../notes.md"
       ],
-      "publish": "bash -c 'set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ./notes.md'",
-      "postpublish": "echo \"\\`\\`\\`\" >> ./notes.md"
+      "publish": "bash -c 'set -o pipefail && cargo publish --no-verify --allow-dirty 2>&1 | tee -a ../notes.md'",
+      "postpublish": "echo \"\\`\\`\\`\" >> ../notes.md"
     }
   },
   "packages": {
