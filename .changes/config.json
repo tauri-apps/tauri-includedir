@@ -16,7 +16,7 @@
         "echo \"# Cargo Publish\" | tee -a ./notes.md",
         "echo \"\\`\\`\\`\" >> ./notes.md"
       ],
-      "publish": "mkfifo pipe & tee -a ./notes.md < pipe & cargo publish --no-verify 2>&1 pipe echo $?",
+      "publish": "bash -c 'set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ./notes.md'",
       "postpublish": "echo \"\\`\\`\\`\" >> ./notes.md"
     }
   },
