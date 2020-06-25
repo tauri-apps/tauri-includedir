@@ -2,7 +2,7 @@
   "pkgManagers": {
     "rust": {
       "version": true,
-      "getPublishedVersion": "cargo search ${ pkg.pkg } --limit 1 | sed -nE 's/^[^\"]*\"//; s/\".*//1p'",
+      "getPublishedVersion": "cargo search ${ pkg.pkg } --limit 1 | sed -nE 's/^[^\"]*\"//; s/\".*//1p' -",
       "prepublishRoot": [
         "cargo generate-lockfile",
         "cargo install cargo-audit",
@@ -14,9 +14,9 @@
       "prepublish": [
         "cargo package --no-verify",
         "echo \"# Cargo Publish\" | tee -a ./notes.md",
-        "echo \"\\`\\`\\`\" >> ${{runner.workspace }}/notes.md"
+        "echo \"\\`\\`\\`\" >> ./notes.md"
       ],
-      "publish": "bash | set -o pipefail && cargo publish --no-verify 2>&1 | tee -a ./notes.md",
+      "publish": "mkfifo pipe & tee -a ./notes.md < pipe & cargo publish --no-verify 2>&1 pipe echo $?",
       "postpublish": "echo \"\\`\\`\\`\" >> ./notes.md"
     }
   },
