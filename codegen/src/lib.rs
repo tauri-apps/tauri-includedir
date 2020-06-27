@@ -120,7 +120,10 @@ impl IncludeDir {
         let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(out_name);
         let mut out_file = BufWriter::new(File::create(&out_path)?);
 
-        writeln!(&mut out_file, "#[allow(clippy::unreadable_literal)]")?;
+        writeln!(
+            &mut out_file,
+            "#[allow(clippy::unreadable_literal, missing_docs)]"
+        )?;
 
         writeln!(
             &mut out_file,
