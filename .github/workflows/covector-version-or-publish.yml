@@ -13,7 +13,7 @@ jobs:
       - name: cargo login
         run: cargo login ${{ secrets.crate_token }}
       - name: covector version-or-publish
-        uses: jbolda/covector/packages/action@master
+        uses: jbolda/covector/packages/action@covector-v0.1.0
         id: covector
         with:
           command: 'version-or-publish'
