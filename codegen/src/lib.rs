@@ -146,7 +146,7 @@ impl IncludeDir {
             .collect();
 
         for (name, (compression, include_path)) in &entries {
-            if filter.iter().any(|value| !include_path.ends_with(value)) {
+            if !filter.iter().any(|value| include_path.ends_with(value)) {
                 let include_path = format!("{}", self.manifest_dir.join(include_path).display());
                 map.entry(
                     name,
