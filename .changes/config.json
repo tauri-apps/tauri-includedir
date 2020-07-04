@@ -24,6 +24,10 @@
     "tauri_includedir": {
       "path": "./lib",
       "manager": "rust"
+    },
+    "codegen": {
+      "path": "./codegen",
+      "manager": "rust"
     }
   }
 }
