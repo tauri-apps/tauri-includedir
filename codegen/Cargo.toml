@@ -6,9 +6,8 @@ categories = [ "filesystem" ]
 version = "0.6.2"
 authors = [ "Till Höppner <till@hoeppner.ws>" ]
 license = "BSD-3-Clause"
-homepage = "https://github.com/tilpner/includedir"
-repository = "https://github.com/tilpner/includedir"
-documentation = "https://docs.rs/includedir_codegen"
+repository = "https://github.com/tauri-apps/tauri-includedir"
+documentation = "https://docs.rs/tauri_includedir_codegen"
 readme = "../README.md"
 edition = "2018"
 
