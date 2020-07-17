@@ -80,7 +80,20 @@ impl IncludeDir {
                 let in_path = self.manifest_dir.join(&path);
                 let mut in_file = BufReader::new(File::open(&in_path)?);
 
-                let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(&path);
+                let path_without_root = if path.as_ref().is_absolute() {
+                    path.as_ref()
+                        .components()
+                        .filter(|c| match c {
+                            std::path::Component::Prefix(_) => false,
+                            std::path::Component::RootDir => false,
+                            _ => true,
+                        })
+                        .collect::<PathBuf>()
+                } else {
+                    path.as_ref().to_path_buf()
+                };
+
+                let out_path = Path::new(&env::var("OUT_DIR").unwrap()).join(&path_without_root);
                 fs::create_dir_all(&out_path.parent().unwrap())?;
                 let out_file = BufWriter::new(File::create(&out_path)?);
                 let mut encoder = GzEncoder::new(out_file, flate2::Compression::best());
