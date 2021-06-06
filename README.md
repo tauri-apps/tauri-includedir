@@ -1,6 +1,12 @@
 tauri_includedir
 ===========
 
+## Deprecation notice
+
+This crate was deprecated. It is now part of the `tauri-codegen` crate.
+
+# tauri-includedir
+
 Include a directory in your Rust binary, e.g. static files for your web server or assets for your game.
 
 ## Features

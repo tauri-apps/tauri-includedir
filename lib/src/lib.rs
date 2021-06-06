@@ -1,3 +1,5 @@
+//! This crate was deprecated. It is now part of the `tauri-codegen` crate.
+
 use std::borrow::{Borrow, Cow};
 use std::io::{self, Cursor, Error, ErrorKind, Read};
 
